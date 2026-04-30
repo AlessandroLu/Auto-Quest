@@ -1,403 +1,509 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   ScrollView,
   View,
   Text,
   TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import { Medal, Card, ProgressBar, Badge } from '../components';
-import { colors } from '../theme/colors';
-import { typography } from '../theme/typography';
-import { sizes, spacing, shadows } from '../theme/spacing';
+  SafeAreaView,
+} from "react-native";
+import {
+  Shield,
+  Star,
+  ParkingCircle,
+  Gauge,
+  HeartPulse,
+  Eye,
+  GraduationCap,
+  Lock,
+  History,
+  TrendingUp,
+  Timer,
+  Share2,
+  ChevronRight,
+  User,
+} from "lucide-react-native";
 
-const screenWidth = Dimensions.get('window').width;
+// Paleta extraída do seu Tailwind config
+const themeColors = {
+  background: "#f5fbef",
+  primary: "#006e1c",
+  onPrimaryFixedVariant: "#005313",
+  surfaceContainer: "#eaf0e4",
+  surfaceContainerHigh: "#e4eade",
+  outlineVariant: "#becab9",
+  onSurface: "#171d16",
+  onSurfaceVariant: "#3f4a3c",
+  secondary: "#8b5000",
+  tertiary: "#a63360",
+  secondaryContainer: "#ff9800",
+  primaryContainer: "#4caf50",
+  tertiaryContainer: "#f26f9d",
+};
 
-export const DigitalWalletScreen: React.FC = ({ navigation }: any) => {
+export const DigitalWalletScreen: React.FC<any> = ({ navigation }: any) => {
   const [wallet] = useState({
-    name: 'João Silva Santos',
-    category: 'Nível 5 - Condutor Prudente',
-    level: 5,
-    joinedDate: new Date('2024-01-15'),
-    totalPoints: 2450,
-    photo: '👤',
+    name: "LUCAS OLIVEIRA",
+    registry: "047291883-9",
+    category: "Nível 5 - Condutor Prudente",
   });
 
-  const [achievements] = useState([
+  const achievements = [
     {
-      id: '1',
-      title: 'Mestre do Estacionamento',
-      emoji: '🅿️',
-      color: 'gold',
-      isUnlocked: true,
-      unlockedAt: new Date('2024-02-01'),
+      id: "1",
+      title: "Mestre do Estacionamento",
+      icon: ParkingCircle,
+      bgColor: themeColors.secondaryContainer,
+      iconColor: "#fff",
+      locked: false,
     },
     {
-      id: '2',
-      title: 'Rei da Rodovia',
-      emoji: '🛣️',
-      color: 'silver',
-      isUnlocked: true,
-      unlockedAt: new Date('2024-02-15'),
+      id: "2",
+      title: "Rei da Rodovia",
+      icon: Gauge,
+      bgColor: themeColors.primaryContainer,
+      iconColor: "#fff",
+      locked: false,
     },
     {
-      id: '3',
-      title: 'Piloto Perfeito',
-      emoji: '🏁',
-      color: 'bronze',
-      isUnlocked: true,
-      unlockedAt: new Date('2024-03-01'),
+      id: "3",
+      title: "Primeiros Socorros",
+      icon: HeartPulse,
+      bgColor: themeColors.tertiaryContainer,
+      iconColor: "#fff",
+      locked: false,
     },
     {
-      id: '4',
-      title: 'Conhecedor de Leis',
-      emoji: '⚖️',
-      color: 'platinum',
-      isUnlocked: true,
-      unlockedAt: new Date('2024-03-15'),
+      id: "4",
+      title: "Olhar de Águia",
+      icon: Eye,
+      bgColor: "#3b82f6",
+      iconColor: "#fff",
+      locked: false,
     },
     {
-      id: '5',
-      title: 'Manutentor Expert',
-      emoji: '🔧',
-      color: 'gold',
-      isUnlocked: false,
-      unlockedAt: undefined,
+      id: "5",
+      title: "Aluno Nota 10",
+      icon: GraduationCap,
+      bgColor: "#fbbf24",
+      iconColor: "#fff",
+      locked: false,
     },
     {
-      id: '6',
-      title: 'Defensivo Champion',
-      emoji: '🛡️',
-      color: 'platinum',
-      isUnlocked: false,
-      unlockedAt: undefined,
+      id: "6",
+      title: "Bloqueado",
+      icon: Lock,
+      bgColor: "#e4e4e7",
+      iconColor: "#a1a1aa",
+      locked: true,
     },
-  ]);
-
-  const getTitleColor = () => {
-    if (wallet.level >= 5) return colors.secondary.main;
-    if (wallet.level >= 3) return colors.primary.main;
-    return colors.info;
-  };
+  ];
 
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: colors.neutral.light,
-      }}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Header */}
-      <View
-        style={{
-          backgroundColor: colors.primary.main,
-          paddingHorizontal: spacing.lg,
-          paddingVertical: spacing.xl,
-          paddingTop: spacing.xl,
-          alignItems: 'center',
-          gap: spacing.md,
-        }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.background }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, gap: 32, paddingBottom: 100 }}
       >
-        <Text
+        {/* Seção do Cartão CDT */}
+        <View
           style={{
-            ...typography.h2,
-            color: colors.neutral.white,
+            backgroundColor: themeColors.primary,
+            borderRadius: 24,
+            padding: 24,
+            borderBottomWidth: 8,
+            borderBottomColor: themeColors.onPrimaryFixedVariant,
+            elevation: 8,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 12,
           }}
         >
-          Minha CDT
-        </Text>
-        <Text
-          style={{
-            ...typography.body2,
-            color: colors.neutral.light,
-          }}
-        >
-          Carteira Digital de Trânsito
-        </Text>
-      </View>
-
-      {/* Carteira Principal */}
-      <View style={{ paddingHorizontal: spacing.lg, paddingVertical: spacing.lg }}>
-        <Card
-          variant="elevated"
-          style={{
-            backgroundColor: '#1B5E20',
-            padding: spacing.lg,
-            ...shadows.prominent,
-          }}
-        >
-          {/* Header da carteira */}
+          {/* Header do Cartão */}
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              marginBottom: spacing.lg,
-              borderBottomWidth: 1,
-              borderBottomColor: 'rgba(255,255,255,0.2)',
-              paddingBottom: spacing.md,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              marginBottom: 24,
             }}
           >
             <View>
               <Text
                 style={{
-                  ...typography.caption,
-                  color: 'rgba(255,255,255,0.7)',
-                  marginBottom: spacing.xs,
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  color: "rgba(255,255,255,0.8)",
+                  textTransform: "uppercase",
+                  letterSpacing: 1,
                 }}
               >
-                CARTEIRA DIGITAL
+                República Federativa do Brasil
               </Text>
               <Text
                 style={{
-                  ...typography.h2,
-                  color: colors.neutral.white,
+                  fontSize: 12,
+                  fontWeight: "bold",
+                  color: "#fff",
+                  textTransform: "uppercase",
                 }}
               >
-                AutoQuest
+                Carteira Digital de Trânsito
               </Text>
             </View>
-            <Text style={{ fontSize: 40 }}>🚗</Text>
+            <Shield color="rgba(255,255,255,0.4)" size={36} />
           </View>
 
-          {/* Foto e informações principais */}
-          <View
-            style={{
-              gap: spacing.lg,
-              marginBottom: spacing.lg,
-            }}
-          >
-            {/* Foto/Avatar */}
+          {/* Conteúdo: Foto e Dados */}
+          <View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>
+            {/* Silhueta do Cartão CDT */}
             <View
               style={{
-                width: 80,
-                height: 80,
+                width: 96,
+                height: 128,
+                backgroundColor: "#fff",
                 borderRadius: 8,
-                backgroundColor: colors.neutral.white,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: colors.secondary.main,
-                ...shadows.subtle,
+                padding: 4,
               }}
             >
-              <Text style={{ fontSize: 40 }}>{wallet.photo}</Text>
-            </View>
-
-            {/* Nome e informações */}
-            <View>
-              <Text
+              <View
                 style={{
-                  ...typography.h3,
-                  color: colors.neutral.white,
-                  marginBottom: spacing.sm,
+                  flex: 1,
+                  backgroundColor: themeColors.surfaceContainerHigh,
+                  borderRadius: 6,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {wallet.name}
-              </Text>
+                <User color={themeColors.outlineVariant} size={48} />
+              </View>
+            </View>
 
-              <View style={{ gap: spacing.sm }}>
-                <View
+            <View style={{ flex: 1, gap: 8 }}>
+              <View>
+                <Text
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingVertical: spacing.sm,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(255,255,255,0.1)',
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.7)",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <Text
-                    style={{
-                      ...typography.body2,
-                      color: 'rgba(255,255,255,0.8)',
-                    }}
-                  >
-                    Categoria:
-                  </Text>
-                  <Text
-                    style={{
-                      ...typography.label,
-                      color: colors.secondary.light,
-                    }}
-                  >
-                    {wallet.category}
-                  </Text>
-                </View>
-
-                <View
+                  Nome do Condutor
+                </Text>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}
+                >
+                  {wallet.name}
+                </Text>
+              </View>
+              <View>
+                <Text
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingVertical: spacing.sm,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(255,255,255,0.1)',
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.7)",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <Text
-                    style={{
-                      ...typography.body2,
-                      color: 'rgba(255,255,255,0.8)',
-                    }}
-                  >
-                    Pontos Total:
-                  </Text>
-                  <Text
-                    style={{
-                      ...typography.label,
-                      color: colors.secondary.light,
-                      fontSize: 16,
-                    }}
-                  >
-                    🪙 {wallet.totalPoints}
-                  </Text>
-                </View>
-
-                <View
+                  Registro Nacional
+                </Text>
+                <Text
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingVertical: spacing.sm,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    color: "#fff",
+                    letterSpacing: 2,
                   }}
                 >
-                  <Text
-                    style={{
-                      ...typography.body2,
-                      color: 'rgba(255,255,255,0.8)',
-                    }}
-                  >
-                    Membro desde:
-                  </Text>
-                  <Text
-                    style={{
-                      ...typography.label,
-                      color: colors.secondary.light,
-                    }}
-                  >
-                    {wallet.joinedDate.toLocaleDateString('pt-BR')}
-                  </Text>
-                </View>
+                  {wallet.registry}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 16,
+                  gap: 6,
+                  alignSelf: "flex-start",
+                  marginTop: 4,
+                }}
+              >
+                <Star color="#fff" size={14} fill="#fff" />
+                <Text
+                  style={{ fontSize: 12, fontWeight: "bold", color: "#fff" }}
+                >
+                  {wallet.category}
+                </Text>
               </View>
             </View>
           </View>
 
-          {/* Barra de Nível */}
-          <View style={{ gap: spacing.sm }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  ...typography.body2,
-                  color: 'rgba(255,255,255,0.8)',
-                }}
-              >
-                Progresso para Nível {wallet.level + 1}:
-              </Text>
-              <Text
-                style={{
-                  ...typography.label,
-                  color: colors.secondary.light,
-                }}
-              >
-                75%
-              </Text>
-            </View>
-            <ProgressBar progress={75} theme="warning" />
-          </View>
-        </Card>
-      </View>
-
-      {/* Conquistas */}
-      <View style={{ paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, gap: spacing.lg }}>
-        <View>
-          <Text
-            style={{
-              ...typography.h3,
-              color: colors.textPrimary,
-              marginBottom: spacing.lg,
-            }}
-          >
-            Minhas Conquistas 🏆
-          </Text>
-
-          <Text
-            style={{
-              ...typography.body2,
-              color: colors.textSecondary,
-              marginBottom: spacing.md,
-            }}
-          >
-            {achievements.filter((a) => a.isUnlocked).length} de{' '}
-            {achievements.length} destravadas
-          </Text>
-
-          {/* Grid de medalhas */}
+          {/* Footer do Cartão */}
           <View
             style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-around',
-              gap: spacing.lg,
+              marginTop: 24,
+              alignItems: "flex-end",
             }}
           >
-            {achievements.map((achievement) => (
-              <Medal
-                key={achievement.id}
-                title={achievement.title}
-                emoji={achievement.emoji}
-                medalColor={
-                  achievement.color as 'gold' | 'silver' | 'bronze' | 'platinum'
-                }
-                isUnlocked={achievement.isUnlocked}
-              />
-            ))}
+            <Text
+              style={{
+                fontSize: 8,
+                color: "rgba(255,255,255,0.5)",
+                textTransform: "uppercase",
+              }}
+            ></Text>
           </View>
         </View>
 
-        {/* Dica motivacional */}
-        <Card
-          variant="outlined"
-          style={{
-            backgroundColor: colors.overlay + '08',
-            borderColor: colors.secondary.main,
-          }}
-        >
+        {/* Seção de Conquistas */}
+        <View style={{ gap: 16 }}>
           <View
             style={{
-              gap: spacing.md,
-              alignItems: 'center',
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 32 }}>🎯</Text>
-            <View style={{ gap: spacing.sm, alignItems: 'center' }}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "600",
+                color: themeColors.onSurface,
+              }}
+            >
+              Minhas Conquistas
+            </Text>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
               <Text
                 style={{
-                  ...typography.h3,
-                  color: colors.textPrimary,
-                  textAlign: 'center',
+                  color: themeColors.primary,
+                  fontWeight: "600",
+                  fontSize: 14,
                 }}
               >
-                Continue estudando!
+                Ver todas
+              </Text>
+              <ChevronRight color={themeColors.primary} size={16} />
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 16,
+              justifyContent: "space-between",
+            }}
+          >
+            {achievements.map((item) => {
+              const Icon = item.icon;
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  activeOpacity={0.8}
+                  style={{
+                    width: "30%",
+                    backgroundColor: "#fff",
+                    borderRadius: 16,
+                    padding: 16,
+                    alignItems: "center",
+                    borderWidth: 2,
+                    borderColor: themeColors.outlineVariant + "50",
+                    borderBottomWidth: 4,
+                    gap: 8,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 24,
+                      backgroundColor: item.bgColor,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      elevation: item.locked ? 0 : 4,
+                    }}
+                  >
+                    <Icon color={item.iconColor} size={24} />
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "bold",
+                      color: item.locked
+                        ? "#a1a1aa"
+                        : themeColors.onSurfaceVariant,
+                      textAlign: "center",
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Estatísticas (Bento Box Style) */}
+        <View style={{ flexDirection: "row", gap: 16 }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: themeColors.surfaceContainer,
+              borderRadius: 16,
+              padding: 16,
+              borderWidth: 2,
+              borderColor: themeColors.outlineVariant + "40",
+              justifyContent: "space-between",
+              aspectRatio: 1,
+            }}
+          >
+            <History color={themeColors.primary} size={32} />
+            <View>
+              <Text
+                style={{
+                  fontSize: 32,
+                  fontWeight: "bold",
+                  color: themeColors.primary,
+                }}
+              >
+                128
               </Text>
               <Text
-                style={{
-                  ...typography.body2,
-                  color: colors.textSecondary,
-                  textAlign: 'center',
-                }}
+                style={{ fontSize: 14, color: themeColors.onSurfaceVariant }}
               >
-                Você está faltando apenas 2 conquistas para desbloquear o próximo nível!
+                Simulados Feitos
               </Text>
             </View>
           </View>
-        </Card>
-      </View>
-    </ScrollView>
+
+          <View style={{ flex: 1, gap: 16 }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: themeColors.surfaceContainerHigh,
+                borderRadius: 16,
+                padding: 16,
+                borderWidth: 2,
+                borderColor: themeColors.outlineVariant + "40",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: themeColors.secondary,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TrendingUp color="#fff" size={24} />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: themeColors.onSurface,
+                  }}
+                >
+                  85%
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    color: themeColors.onSurfaceVariant,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Precisão
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: themeColors.surfaceContainerHigh,
+                borderRadius: 16,
+                padding: 16,
+                borderWidth: 2,
+                borderColor: themeColors.outlineVariant + "40",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: themeColors.tertiary,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Timer color="#fff" size={24} />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: themeColors.onSurface,
+                  }}
+                >
+                  14h
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    color: themeColors.onSurfaceVariant,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  De Estudo
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Botão de Ação */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{
+            width: "100%",
+            height: 56,
+            backgroundColor: themeColors.primary,
+            borderRadius: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
+            borderBottomWidth: 4,
+            borderBottomColor: themeColors.onPrimaryFixedVariant,
+            marginTop: 8,
+          }}
+        >
+          <Share2 color="#fff" size={20} />
+          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
+            Compartilhar Perfil
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

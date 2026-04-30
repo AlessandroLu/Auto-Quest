@@ -1,14 +1,8 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-  Image,
-} from 'react-native';
-import { colors } from '../theme/colors';
-import { typography } from '../theme/typography';
-import { sizes, spacing, shadows } from '../theme/spacing';
+import React from "react";
+import { View, Text, TouchableOpacity, ViewStyle, Image } from "react-native";
+import { colors } from "../theme/colors";
+import { typography } from "../theme/typography";
+import { sizes, spacing, shadows } from "../theme/spacing";
 
 interface HeaderProps {
   title: string;
@@ -49,9 +43,9 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Saudação e Perfil */}
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: spacing.md,
         }}
       >
@@ -63,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
               marginBottom: 4,
             }}
           >
-            Olá, {userName || 'Motorista'}! 👋
+            Olá, {userName || "Motorista"}! 👋
           </Text>
           <Text
             style={{
@@ -88,8 +82,8 @@ export const Header: React.FC<HeaderProps> = ({
               height: sizes.iconLarge,
               borderRadius: sizes.iconLarge / 2,
               backgroundColor: colors.neutral.white,
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              justifyContent: "center",
               borderWidth: 3,
               borderColor: colors.secondary.main,
               ...shadows.subtle,
@@ -103,21 +97,21 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Streak e Moedas */}
       <View
         style={{
-          flexDirection: 'row',
+          flexDirection: "row",
           gap: spacing.md,
           paddingTop: spacing.md,
           borderTopWidth: 1,
-          borderTopColor: 'rgba(255,255,255,0.2)',
+          borderTopColor: "rgba(255,255,255,0.2)",
         }}
       >
         {/* Streak */}
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             gap: spacing.sm,
-            backgroundColor: 'rgba(255,255,255,0.1)',
+            backgroundColor: "rgba(255,255,255,0.1)",
             padding: spacing.sm,
             borderRadius: 8,
           }}
@@ -147,10 +141,10 @@ export const Header: React.FC<HeaderProps> = ({
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             gap: spacing.sm,
-            backgroundColor: 'rgba(255,255,255,0.1)',
+            backgroundColor: "rgba(255,255,255,0.1)",
             padding: spacing.sm,
             borderRadius: 8,
           }}

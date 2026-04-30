@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { House, NotebookText, Wallet, Users, Bolt } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { typography } from "../theme/typography";
 import { sizes, spacing } from "../theme/spacing";
 
 interface BottomTabItem {
   name: string;
-  icon: string;
+  icon: (active: boolean) => React.ReactNode;
   label: string;
 }
 
@@ -16,11 +17,56 @@ interface BottomTabNavigatorProps {
 }
 
 const tabs: BottomTabItem[] = [
-  { name: "Home", icon: "🏠", label: "Home" },
-  { name: "Simulados", icon: "📝", label: "Simulados" },
-  { name: "Carteira", icon: "🎖️", label: "Carteira" },
-  { name: "Comunidade", icon: "👥", label: "Comunidade" },
-  { name: "Configuracoes", icon: "⚙️", label: "Config" },
+  {
+    name: "Home",
+    icon: (active) => (
+      <House
+        color={active ? colors.primary.main : colors.neutral.gray}
+        size={24}
+      />
+    ),
+    label: "Home",
+  },
+  {
+    name: "Simulados",
+    icon: (active) => (
+      <NotebookText
+        color={active ? colors.primary.main : colors.neutral.gray}
+        size={24}
+      />
+    ),
+    label: "Simulados",
+  },
+  {
+    name: "Carteira",
+    icon: (active) => (
+      <Wallet
+        color={active ? colors.primary.main : colors.neutral.gray}
+        size={24}
+      />
+    ),
+    label: "Carteira",
+  },
+  {
+    name: "Comunidade",
+    icon: (active) => (
+      <Users
+        color={active ? colors.primary.main : colors.neutral.gray}
+        size={24}
+      />
+    ),
+    label: "Comunidade",
+  },
+  {
+    name: "Configuracoes",
+    icon: (active) => (
+      <Bolt
+        color={active ? colors.primary.main : colors.neutral.gray}
+        size={24}
+      />
+    ),
+    label: "Config",
+  },
 ];
 
 export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
@@ -57,7 +103,11 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
             }}
             activeOpacity={0.7}
           >
-            <Text style={{ fontSize: 24 }}>{tab.icon}</Text>
+            {typeof tab.icon(isActive) === "string" ? (
+              <Text style={{ fontSize: 24 }}>{tab.icon(isActive)}</Text>
+            ) : (
+              tab.icon(isActive)
+            )}
             <Text
               style={[
                 typography.caption as any,
