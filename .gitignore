@@ -1,7 +1,12 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-#Markdown files
+
+# Markdown files
 README2.md
+BRIEFING_EXECUTIVO.md
+ACCESSIBILITY.md
+DELIVERY_CHECKLIST.md
+
 
 # dependencies
 node_modules/
