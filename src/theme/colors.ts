@@ -7,55 +7,60 @@
 export const colors = {
   // Primárias
   primary: {
-    light: '#4CAF50', // Verde claro (siga/acerto)
-    main: '#388E3C', // Verde padrão
-    dark: '#1B5E20', // Verde escuro
+    light: "#4CAF50", // Verde claro (siga/acerto)
+    main: "#388E3C", // Verde padrão
+    dark: "#1B5E20", // Verde escuro
   },
-
   // Secundárias (Atenção/Alertas)
   secondary: {
-    light: '#FFB74D', // Laranja claro
-    main: '#FFA726', // Laranja
-    dark: '#F57C00', // Laranja escuro
+    light: "#FFB74D", // Laranja claro
+    main: "#FFA726", // Laranja
+    dark: "#F57C00", // Laranja escuro
+  },
+  // Terciárias (Complementares)
+  tertiary: {
+    light: "#F48FB1", // Rosa claro
+    main: "#EC407A", // Rosa
+    dark: "#C2185B", // Rosa escuro
   },
 
   // Status
-  success: '#4CAF50',
-  error: '#E53935',
-  warning: '#FFB74D',
-  info: '#1976D2',
+  success: "#4CAF50",
+  error: "#E53935",
+  warning: "#FFB74D",
+  info: "#1976D2",
 
   // Neutros
   neutral: {
-    white: '#FFFFFF',
-    light: '#F5F5F5',
-    lighter: '#EEEEEE',
-    gray: '#9E9E9E',
-    darkGray: '#616161',
-    dark: '#212121',
-    black: '#000000',
+    white: "#FFFFFF",
+    light: "#F5F5F5",
+    lighter: "#EEEEEE",
+    gray: "#9E9E9E",
+    darkGray: "#616161",
+    dark: "#212121",
+    black: "#000000",
   },
 
   // Para gradientes
   gradient: {
-    greenStart: '#4CAF50',
-    greenEnd: '#388E3C',
-    orangeStart: '#FFB74D',
-    orangeEnd: '#FFA726',
+    greenStart: "#4CAF50",
+    greenEnd: "#388E3C",
+    orangeStart: "#FFB74D",
+    orangeEnd: "#FFA726",
   },
 
   // Overlay e transparência
-  overlay: 'rgba(0, 0, 0, 0.7)',
-  overlayLight: 'rgba(0, 0, 0, 0.3)',
-  overlaySuccess: 'rgba(76, 175, 80, 0.1)',
-  overlayError: 'rgba(229, 57, 53, 0.1)',
+  overlay: "rgba(0, 0, 0, 0.7)",
+  overlayLight: "rgba(0, 0, 0, 0.3)",
+  overlaySuccess: "rgba(76, 175, 80, 0.1)",
+  overlayError: "rgba(229, 57, 53, 0.1)",
 
   // Badges e gamificação
   badge: {
-    gold: '#FFD700',
-    silver: '#C0C0C0',
-    bronze: '#CD7F32',
-    platinum: '#E5E4E2',
+    gold: "#FFD700",
+    silver: "#C0C0C0",
+    bronze: "#CD7F32",
+    platinum: "#E5E4E2",
   },
 };
 

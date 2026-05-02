@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { HomeScreen, QuizScreen, DigitalWalletScreen } from "./src/screens";
+import {
+  HomeScreen,
+  QuizScreen,
+  DigitalWalletScreen,
+  ComunidadeScreen,
+  ConfiguraçaoScreen,
+} from "./src/screens";
 import { BottomTabNavigator } from "./src/navigation/BottomTabNavigator";
 import { colors } from "./src/theme/colors";
 
@@ -55,9 +61,9 @@ export default function App() {
       case "Carteira":
         return <DigitalWalletScreen navigation={navigation} />;
       case "Comunidade":
-        return <HomeScreen navigation={navigation} />; // Placeholder
+        return <ComunidadeScreen navigation={navigation} />;
       case "Configuracoes":
-        return <HomeScreen navigation={navigation} />; // Placeholder
+        return <ConfiguraçaoScreen navigation={navigation} />;
       default:
         return <HomeScreen navigation={navigation} />;
     }
@@ -70,7 +76,7 @@ export default function App() {
         backgroundColor: colors.neutral.white,
       }}
     >
-      <StatusBar barStyle="light-content" />
+      <StatusBar style="light" />
       <View style={{ flex: 1 }}>{renderScreen()}</View>
       <BottomTabNavigator activeTab={activeTab} onTabPress={handleTabPress} />
     </SafeAreaView>

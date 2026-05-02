@@ -1,347 +1,433 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  ScrollView,
   View,
   Text,
   TouchableOpacity,
   Image,
-  Animated,
-} from 'react-native';
-import { Button, Card, ProgressBar } from '../components';
-import { colors } from '../theme/colors';
-import { typography } from '../theme/typography';
-import { sizes, spacing, shadows } from '../theme/spacing';
+  ScrollView,
+  TextStyle,
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { colors } from "../theme/colors";
+import { typography } from "../theme/typography";
+import { sizes, spacing, shadows } from "../theme/spacing";
 
-interface AnswerState {
-  questionIndex: number;
-  selectedAnswer: string | null;
-  isAnswered: boolean;
-  isCorrect: boolean | null;
+interface Question {
+  id: string;
+  title: string;
+  imageUrl: string;
+  options: { id: string; text: string }[];
+  correctAnswerId: string;
+  explanation: string;
+  points: number;
 }
 
-export const QuizScreen: React.FC = ({ navigation, route }: any) => {
-  const [answerState, setAnswerState] = useState<AnswerState>({
-    questionIndex: 0,
-    selectedAnswer: null,
-    isAnswered: false,
-    isCorrect: null,
-  });
+export const QuizScreen: React.FC<any> = ({ navigation }: any) => {
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-  const [questions] = useState([
+  const questions: Question[] = [
     {
-      id: '1',
-      title: 'Qual é o significado da placa de sinalização VERMELHA com um círculo e barra diagonal?',
-      image: '🚫', // Emoji representando a placa
+      id: "1",
+      title:
+        "Nesta situação de rotatória sem sinalização, quem tem a preferência de passagem?",
+      imageUrl:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBxwsa7uk9Gz_MiDjo4h1kBzVATBx1dTK6I1gq_Q0eF-ZUokDvl9NsYNSXa6hla1WDMFmJG7z56OlsVfZngIDc8CnNFOAofhm8rpYAbbaB_FruX1Q8UY_7RTMIv2AGKRHmBhneGdGkCFOAfwNOzm3-zo3S6V47EgM8rwGAAuYjQU1x-A6ZfJ_v5tPfBlFlKWQLOVWAuvwfnmEUYHCrbMtH4CsyQRSn8201cQdZYHEztYLj1CjE4vFpGlTPkUSp9vseuxmIW5rBqebo",
       options: [
-        { id: 'a', text: 'Estacionamento proibido' },
-        { id: 'b', text: 'Entrada proibida' },
-        { id: 'c', text: 'Passagem proibida' },
-        { id: 'd', text: 'Parada proibida' },
+        { id: "a", text: "O veículo que já estiver circulando na rotatória." },
+        {
+          id: "b",
+          text: "O veículo que estiver entrando pela via da direita.",
+        },
+        {
+          id: "c",
+          text: "O veículo que estiver desenvolvendo maior velocidade.",
+        },
+        { id: "d", text: "O condutor que acionar a buzina primeiro." },
       ],
-      correctAnswerId: 'b',
-      explanation: 'Uma placa vermelha com círculo e barra diagonal significa entrada proibida naquele local.',
-      videoUrl: 'https://example.com/video',
-      difficulty: 'easy',
+      correctAnswerId: "a",
+      explanation:
+        "Veículos em rotatória têm preferência, salvo sinalização em contrário.",
       points: 10,
     },
     {
-      id: '2',
-      title: 'Em uma situação de aquaplanagem, qual é o procedimento CORRETO?',
-      image: '💨',
+      id: "2",
+      title:
+        "Qual é a principal regra de prioridade em uma rotatória sem sinalização?",
+      imageUrl:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBxwsa7uk9Gz_MiDjo4h1kBzVATBx1dTK6I1gq_Q0eF-ZUokDvl9NsYNSXa6hla1WDMFmJG7z56OlsVfZngIDc8CnNFOAofhm8rpYAbbaB_FruX1Q8UY_7RTMIv2AGKRHmBhneGdGkCFOAfwNOzm3-zo3S6V47EgM8rwGAAuYjQU1x-A6ZfJ_v5tPfBlFlKWQLOVWAuvwfnmEUYHCrbMtH4CsyQRSn8201cQdZYHEztYLj1CjE4vFpGlTPkUSp9vseuxmIW5rBqebo",
       options: [
-        { id: 'a', text: 'Freiar bruscamente para recuperar tração' },
-        { id: 'b', text: 'Manter a velocidade e tentar estabilizar o veículo' },
-        { id: 'c', text: 'Virar bruscamente para recuperar tração' },
-        { id: 'd', text: 'Desacelerar gradualmente, sem frear bruscamente' },
+        { id: "a", text: "Quem entrar primeiro mantém a preferência." },
+        { id: "b", text: "Veículos na rotatória têm preferência." },
+        { id: "c", text: "Veículos menores têm prioridade." },
+        { id: "d", text: "Quem buzinar primeiro avança." },
       ],
-      correctAnswerId: 'd',
-      explanation: 'Em aquaplanagem, você deve desacelerar gradualmente sem frear bruscamente, pois o objetivo é recuperar a tração dos pneus com o pavimento.',
-      videoUrl: 'https://example.com/video2',
-      difficulty: 'medium',
-      points: 25,
+      correctAnswerId: "b",
+      explanation:
+        "Em rotatórias, o veículo que já circula no interior da rotatória prevalece.",
+      points: 10,
     },
-    {
-      id: '3',
-      title: 'Qual é a distância mínima de segurança com o veículo à frente em rodovia?',
-      image: '🛣️',
-      options: [
-        { id: 'a', text: '10 metros' },
-        { id: 'b', text: 'Metade da velocidade em metros' },
-        { id: 'c', text: 'Um terço da velocidade em metros' },
-        { id: 'd', text: 'Aquela que permite parar sem colisão' },
-      ],
-      correctAnswerId: 'd',
-      explanation: 'A distância segura é aquela que permite ao condutor parar o veículo sem colidir com o veículo à frente em caso de emergência.',
-      videoUrl: 'https://example.com/video3',
-      difficulty: 'hard',
-      points: 50,
-    },
-  ]);
+  ];
 
-  const currentQuestion = questions[answerState.questionIndex];
+  const currentQuestion = questions[questionIndex];
   const totalQuestions = questions.length;
-  const progress = ((answerState.questionIndex + 1) / totalQuestions) * 100;
+  const progress = ((questionIndex + 1) / totalQuestions) * 100;
 
   const handleAnswerPress = (answerId: string) => {
-    if (answerState.isAnswered) return;
+    if (isAnswered) return;
+    setSelectedAnswer(answerId);
+  };
 
-    const isCorrect = answerId === currentQuestion.correctAnswerId;
-    setAnswerState({
-      ...answerState,
-      selectedAnswer: answerId,
-      isAnswered: true,
-      isCorrect: isCorrect,
-    });
+  const handleConfirm = () => {
+    if (!selectedAnswer) return;
+    const correct = selectedAnswer === currentQuestion.correctAnswerId;
+    setIsCorrect(correct);
+    setIsAnswered(true);
   };
 
   const handleNext = () => {
-    if (answerState.questionIndex < totalQuestions - 1) {
-      setAnswerState({
-        questionIndex: answerState.questionIndex + 1,
-        selectedAnswer: null,
-        isAnswered: false,
-        isCorrect: null,
-      });
+    if (questionIndex < totalQuestions - 1) {
+      setQuestionIndex(questionIndex + 1);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setIsCorrect(null);
     } else {
-      // Fim do quiz
-      navigation?.navigate?.('QuizResult');
+      navigation?.navigate?.("QuizResult");
     }
   };
 
-  const getOptionStyle = (optionId: string) => {
-    if (!answerState.isAnswered) {
-      return { backgroundColor: colors.neutral.light };
-    }
-
-    if (optionId === currentQuestion.correctAnswerId) {
-      return { backgroundColor: colors.overlay + '22' };
-    }
-
-    if (optionId === answerState.selectedAnswer && !answerState.isCorrect) {
-      return { backgroundColor: colors.error + '22' };
-    }
-
-    return { backgroundColor: colors.neutral.light };
-  };
-
-  const getBorderColor = (optionId: string) => {
-    if (!answerState.isAnswered) {
+  const getOptionBorder = (optionId: string) => {
+    if (!selectedAnswer) {
       return colors.neutral.gray;
     }
-
-    if (optionId === currentQuestion.correctAnswerId) {
-      return colors.success;
+    if (isAnswered) {
+      if (optionId === currentQuestion.correctAnswerId) {
+        return colors.success;
+      }
+      if (optionId === selectedAnswer && !isCorrect) {
+        return colors.error;
+      }
     }
-
-    if (optionId === answerState.selectedAnswer && !answerState.isCorrect) {
-      return colors.error;
-    }
-
     return colors.neutral.gray;
   };
 
+  const getOptionBackground = (optionId: string) => {
+    if (!selectedAnswer) {
+      return colors.neutral.white;
+    }
+    if (isAnswered) {
+      if (optionId === currentQuestion.correctAnswerId) {
+        return colors.success + "15";
+      }
+      if (optionId === selectedAnswer && !isCorrect) {
+        return colors.error + "15";
+      }
+    }
+    return colors.neutral.white;
+  };
+
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: colors.neutral.white,
-      }}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Header com progresso */}
+    <View style={{ flex: 1, backgroundColor: colors.neutral.white }}>
       <View
         style={{
-          backgroundColor: colors.primary.main,
+          backgroundColor: colors.neutral.white,
+          borderBottomWidth: 2,
+          borderBottomColor: colors.neutral.lighter,
           paddingHorizontal: spacing.lg,
-          paddingVertical: spacing.lg,
           paddingTop: spacing.xl,
-          gap: spacing.md,
+          paddingBottom: spacing.md,
         }}
       >
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
+            gap: spacing.md,
           }}
         >
-          <Text style={{ ...typography.h3, color: colors.neutral.white }}>
-            Questão {answerState.questionIndex + 1} de {totalQuestions}
-          </Text>
-          <TouchableOpacity onPress={() => navigation?.goBack?.()}>
-            <Text style={{ fontSize: 24 }}>✕</Text>
+          <TouchableOpacity
+            onPress={() => navigation?.goBack?.()}
+            style={{
+              padding: spacing.sm,
+              borderRadius: 999,
+              backgroundColor: colors.neutral.white,
+              borderWidth: 1,
+              borderColor: colors.neutral.lighter,
+            }}
+          >
+            <MaterialIcons
+              name="close"
+              size={20}
+              color={colors.neutral.darkGray}
+            />
           </TouchableOpacity>
+          <View style={{ flex: 1, paddingHorizontal: spacing.md }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: spacing.xs,
+              }}
+            >
+              <Text
+                style={
+                  {
+                    ...typography.label,
+                    color: colors.primary.main,
+                    textTransform: "uppercase",
+                    letterSpacing: 0.6,
+                  } as TextStyle
+                }
+              >
+                Questão {questionIndex + 1} de {totalQuestions}
+              </Text>
+              <Text
+                style={
+                  {
+                    ...typography.label,
+                    color: colors.neutral.gray,
+                  } as TextStyle
+                }
+              >
+                15:00
+              </Text>
+            </View>
+            <View
+              style={{
+                height: 8,
+                width: "100%",
+                backgroundColor: colors.neutral.lighter,
+                borderRadius: 999,
+                overflow: "hidden",
+              }}
+            >
+              <View
+                style={{
+                  height: "100%",
+                  width: `${progress}%`,
+                  backgroundColor: colors.primary.main,
+                }}
+              />
+              <View
+                style={{
+                  position: "absolute",
+                  top: 2,
+                  left: "10%",
+                  right: "10%",
+                  height: 4,
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  borderRadius: 999,
+                }}
+              />
+            </View>
+          </View>
         </View>
-        <ProgressBar progress={progress} theme="info" />
       </View>
 
-      {/* Conteúdo */}
-      <View
-        style={{
-          padding: spacing.lg,
-          gap: spacing.lg,
-        }}
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 180 }}
+        showsVerticalScrollIndicator={false}
       >
-        {/* Imagem/Ilustração */}
         <View
           style={{
-            backgroundColor: colors.neutral.light,
-            height: 200,
+            marginHorizontal: spacing.lg,
+            marginTop: spacing.lg,
+            marginBottom: spacing.lg,
             borderRadius: sizes.cardBorderRadius,
-            alignItems: 'center',
-            justifyContent: 'center',
+            overflow: "hidden",
+            backgroundColor: colors.neutral.white,
+            borderWidth: 2,
+            borderColor: colors.neutral.lighter,
             ...shadows.subtle,
+            height: 220,
           }}
         >
-          <Text style={{ fontSize: 64 }}>{currentQuestion.image}</Text>
+          <Image
+            source={{ uri: currentQuestion.imageUrl }}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
+          />
+          <View
+            style={{
+              position: "absolute",
+              top: spacing.lg,
+              right: spacing.lg,
+              backgroundColor: colors.secondary.main,
+              paddingHorizontal: spacing.sm,
+              paddingVertical: spacing.xs,
+              borderRadius: 999,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: spacing.xs,
+            }}
+          >
+            <MaterialIcons
+              name="directions-car"
+              size={18}
+              color={colors.neutral.white}
+            />
+            <Text
+              style={
+                {
+                  ...typography.body2,
+                  color: colors.neutral.white,
+                } as TextStyle
+              }
+            >
+              Prioridade
+            </Text>
+          </View>
         </View>
 
-        {/* Pergunta */}
-        <Card variant="elevated">
+        <View style={{ paddingHorizontal: spacing.lg, gap: spacing.sm }}>
           <Text
-            style={{
-              ...typography.h3,
-              color: colors.textPrimary,
-              lineHeight: 28,
-            }}
+            style={
+              {
+                ...typography.h3,
+                color: colors.neutral.dark,
+                lineHeight: 32,
+              } as TextStyle
+            }
           >
             {currentQuestion.title}
           </Text>
-        </Card>
+          <Text
+            style={
+              {
+                ...typography.body1,
+                color: colors.neutral.darkGray,
+              } as TextStyle
+            }
+          >
+            Observe atentamente o posicionamento do veículo verde e a
+            sinalização horizontal.
+          </Text>
+        </View>
 
-        {/* Opções de resposta */}
-        <View style={{ gap: spacing.md }}>
+        <View
+          style={{
+            paddingHorizontal: spacing.lg,
+            gap: spacing.md,
+            marginTop: spacing.lg,
+          }}
+        >
           {currentQuestion.options.map((option, index) => (
             <TouchableOpacity
               key={option.id}
               onPress={() => handleAnswerPress(option.id)}
-              disabled={answerState.isAnswered}
+              disabled={isAnswered}
               style={{
-                borderRadius: sizes.cardBorderRadius,
+                backgroundColor: getOptionBackground(option.id),
                 borderWidth: 2,
-                borderColor: getBorderColor(option.id),
-                ...getOptionStyle(option.id),
+                borderColor: getOptionBorder(option.id),
+                borderBottomWidth: 4,
+                borderRadius: sizes.cardBorderRadius,
+                padding: spacing.md,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: spacing.md,
               }}
-              activeOpacity={answerState.isAnswered ? 1 : 0.7}
+              activeOpacity={0.85}
             >
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: spacing.lg,
-                  gap: spacing.md,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 16,
+                  backgroundColor: colors.neutral.lighter,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {/* Opção letra/número */}
-                <View
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 18,
-                    backgroundColor: colors.primary.main,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...typography.label,
-                      color: colors.neutral.white,
-                    }}
-                  >
-                    {String.fromCharCode(65 + index)}
-                  </Text>
-                </View>
-
-                {/* Texto da opção */}
                 <Text
-                  style={{
+                  style={
+                    {
+                      ...typography.h3,
+                      color: colors.primary.main,
+                    } as TextStyle
+                  }
+                >
+                  {String.fromCharCode(65 + index)}
+                </Text>
+              </View>
+              <Text
+                style={
+                  {
                     flex: 1,
                     ...typography.body1,
-                    color: colors.textPrimary,
-                  }}
-                >
-                  {option.text}
-                </Text>
-
-                {/* Feedback visual */}
-                {answerState.isAnswered && (
-                  <Text style={{ fontSize: 20 }}>
-                    {option.id === currentQuestion.correctAnswerId ? '✓' : ''}
-                    {option.id === answerState.selectedAnswer &&
-                    !answerState.isCorrect
-                      ? '✗'
-                      : ''}
-                  </Text>
-                )}
-              </View>
+                    color: colors.neutral.dark,
+                  } as TextStyle
+                }
+              >
+                {option.text}
+              </Text>
+              {selectedAnswer === option.id && !isAnswered ? (
+                <MaterialIcons
+                  name="check"
+                  size={20}
+                  color={colors.primary.main}
+                />
+              ) : null}
             </TouchableOpacity>
           ))}
         </View>
+      </ScrollView>
 
-        {/* Feedback após resposta */}
-        {answerState.isAnswered && (
-          <Card
-            variant="elevated"
-            style={{
-              backgroundColor:
-                answerState.isCorrect
-                  ? colors.overlay + '15'
-                  : colors.error + '15',
-              borderLeftWidth: 4,
-              borderLeftColor: answerState.isCorrect
-                ? colors.success
-                : colors.error,
-            }}
+      <View
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingHorizontal: spacing.lg,
+          paddingVertical: spacing.md,
+          backgroundColor: colors.neutral.white,
+          borderTopWidth: 2,
+          borderTopColor: colors.neutral.lighter,
+        }}
+      >
+        <TouchableOpacity
+          onPress={isAnswered ? handleNext : handleConfirm}
+          disabled={!selectedAnswer && !isAnswered}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 56,
+            borderRadius: 20,
+            backgroundColor:
+              selectedAnswer || isAnswered
+                ? colors.primary.main
+                : colors.neutral.lighter,
+            opacity: selectedAnswer || isAnswered ? 1 : 0.6,
+          }}
+        >
+          <Text
+            style={
+              {
+                ...typography.button,
+                color: colors.neutral.white,
+                marginRight: spacing.sm,
+              } as TextStyle
+            }
           >
-            <View style={{ gap: spacing.md }}>
-              <View style={{ flexDirection: 'row', gap: spacing.md }}>
-                <Text style={{ fontSize: 32 }}>
-                  {answerState.isCorrect ? '🎉' : '📚'}
-                </Text>
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      ...typography.h3,
-                      color: colors.textPrimary,
-                      marginBottom: spacing.sm,
-                    }}
-                  >
-                    {answerState.isCorrect ? 'Parabéns!' : 'Não foi desta vez'}
-                  </Text>
-                  <Text
-                    style={{
-                      ...typography.body2,
-                      color: colors.textSecondary,
-                    }}
-                  >
-                    {currentQuestion.explanation}
-                  </Text>
-                </View>
-              </View>
-
-              {/* Botão de vídeo explicativo */}
-              <Button
-                title="📹 Assistir Vídeo Explicativo"
-                variant="secondary"
-                size="medium"
-                onPress={() => {}}
-              />
-            </View>
-          </Card>
-        )}
-
-        {/* Botão próxima questão */}
-        {answerState.isAnswered && (
-          <Button
-            title={answerState.questionIndex === totalQuestions - 1 ? 'Finalizar' : 'Próxima'}
-            variant="primary"
-            size="large"
-            onPress={handleNext}
+            {isAnswered
+              ? questionIndex === totalQuestions - 1
+                ? "Finalizar"
+                : "Continuar"
+              : "Confirmar Resposta"}
+          </Text>
+          <MaterialIcons
+            name="arrow-forward"
+            size={20}
+            color={colors.neutral.white}
           />
-        )}
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
