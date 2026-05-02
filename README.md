@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Auto-Quest
-=======
-# 🚗 AutoQuest - Aplicativo de Educação em Trânsito Gamificado
-=======
 # AutoQuest - Aplicativo de Educação em Trânsito Gamificado
->>>>>>> master
 
 ## Visão Geral
 
@@ -118,6 +111,7 @@ expo start --clear
 - Implemente virtualização em listas longas (FlatList)
 
 ---
+
 <<<<<<< HEAD
 
 ## 📞 Suporte & Contato
@@ -139,6 +133,7 @@ Este projeto é de propriedade da AutoQuest Inc. Todos os direitos reservados.
 **Desenvolvido com ❤️ para novos condutores brasileiros**  
 **AutoQuest v1.0.0 - Protótipo de Alta Fidelidade**  
 **Data**: 29 de abril de 2026
->>>>>>> master
-=======
->>>>>>> master
+
+> > > > > > > # master
+> > > > > > >
+> > > > > > > master
